@@ -5,8 +5,8 @@ import numpy as np
 def backtest(buy_query, sell_query, df):
     # df should minimally have a timestamp and close column
     df['signal'] = np.nan
-    df.loc[buy_query, 'signal'] = 1
-    df.loc[sell_query, 'signal'] = -1
+    df.loc[df.eval(buy_query), 'signal'] = 1
+    df.loc[df.eval(sell_query), 'signal'] = -1
     buy_df = df.loc[df['signal'] == 1]
     sell_df = df.loc[df['signal'] == -1]
     reduced_df = pd.concat([sell_df, buy_df], axis=0,
