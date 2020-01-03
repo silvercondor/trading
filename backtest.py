@@ -2,11 +2,12 @@ import pandas as pd
 import numpy as np
 
 
-def backtest(buy_query, sell_query, df):
+def backtest(buy_condition, sell_condition, df):
     # df should minimally have a timestamp and close column
+    # buy_condition & sell_condition should be dependent on the provided df
     df['signal'] = np.nan
-    df.loc[df.eval(buy_query), 'signal'] = 1
-    df.loc[df.eval(sell_query), 'signal'] = -1
+    df.loc[df.eval(buy_condition), 'signal'] = 1
+    df.loc[df.eval(sell_condition), 'signal'] = -1
     buy_df = df.loc[df['signal'] == 1]
     sell_df = df.loc[df['signal'] == -1]
     reduced_df = pd.concat([sell_df, buy_df], axis=0,
